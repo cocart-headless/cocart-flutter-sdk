@@ -1,4 +1,3 @@
-import '../auth/auth_manager.dart';
 import '../cocart_options.dart';
 import '../http/http_client.dart';
 import '../http/response.dart';
@@ -9,10 +8,9 @@ import '../validation/validators.dart';
 /// Mirrors every cart method from the TS SDK.
 class CartResource {
   final CoCartHttpClient _http;
-  final AuthManager _auth;
   final CoCartOptions _options;
 
-  CartResource(this._http, this._auth, this._options);
+  CartResource(this._http, this._options);
 
   Future<CoCartResponse> create() => _http.post('cart');
 
