@@ -9,22 +9,9 @@ import '../mocks/mock_http_client.dart';
 void main() {
   group('CartResource', () {
     late MockHttpClient mockClient;
-    late CoCart client;
 
     setUp(() {
       mockClient = MockHttpClient();
-      final options = CoCartOptions(storage: MemoryStorage());
-      final auth = AuthManager(options, MemoryStorage());
-      final httpClient = CoCartHttpClient(
-        'https://example.com',
-        options,
-        auth,
-        mockClient,
-      );
-      // We build the client manually to inject the mock
-      client = CoCart('https://example.com', options);
-      // Override the internal http client via reflection-free approach:
-      // We test CartResource directly instead.
     });
 
     test('addItem validates product ID', () {
@@ -32,7 +19,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       expect(
         () => cart.addItem(-1, 1),
@@ -45,7 +32,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       expect(
         () => cart.addItem(1, 0),
@@ -60,7 +47,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       final response = await cart.addItem(42, 2);
       expect(response.getItemCount(), 1);
@@ -70,7 +57,7 @@ void main() {
       expect(request.url.path, contains('cart/add-item'));
 
       final body = jsonDecode(
-          await (request as http.Request).body) as Map<String, dynamic>;
+          (request as http.Request).body) as Map<String, dynamic>;
       expect(body['id'], '42');
       expect(body['quantity'], '2');
     });
@@ -82,7 +69,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       await cart.getFiltered(['items', 'totals']);
       final url = mockClient.requests.first.url;
@@ -96,7 +83,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       await cart.getFiltered(['items', 'totals']);
       final url = mockClient.requests.first.url;
@@ -110,7 +97,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       await cart.add(42, 1);
       expect(mockClient.requests.first.url.path, contains('cart/add-item'));
@@ -123,7 +110,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       await cart.empty();
       expect(mockClient.requests.first.url.path, contains('cart/clear'));
@@ -134,7 +121,7 @@ void main() {
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
         'https://example.com', options, auth, mockClient);
-      final cart = CartResource(httpClient, auth, options);
+      final cart = CartResource(httpClient, options);
 
       expect(
         () => cart.updateItem('key123', -1),
