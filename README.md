@@ -7,6 +7,9 @@
 
 Official Flutter SDK for the [CoCart](https://cocartapi.com) REST API. Build headless WooCommerce storefronts with Flutter.
 
+> ![IMPORTANT]
+> This SDK is still in development and not yet ready for production use. Provide feedback if you experience a bug.
+
 ## TODO to complete the SDK
 
 - Add SDK docs to documentation site
