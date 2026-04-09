@@ -25,9 +25,9 @@ class CoCart {
 
   // --- Resources (mirrors TS client.cart(), client.products() pattern) ---
 
-  CartResource cart() => CartResource(_http, _auth, _options);
+  CartResource cart() => CartResource(_http, _options);
   ProductsResource products() => ProductsResource(_http, _options);
-  SessionsResource sessions() => SessionsResource(_http, _auth);
+  SessionsResource sessions() => SessionsResource(_http);
   JwtResource jwt() => JwtResource(_http, _auth);
 
   CoCart(this.siteUrl, [CoCartOptions? options])
