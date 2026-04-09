@@ -1,4 +1,4 @@
-# cocart
+# CoCart Flutter SDK
 
 [![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?logo=Flutter&logoColor=white)](https://flutter.dev)
 [![pub package](https://img.shields.io/pub/v/cocart.svg)](https://pub.dev/packages/cocart)
