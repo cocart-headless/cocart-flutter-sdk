@@ -55,7 +55,8 @@ class CoCartHttpClient {
       params['cart_key'] = cartKey;
     }
 
-    return Uri.parse(path).replace(queryParameters: params.isNotEmpty ? params : null);
+    return Uri.parse(path)
+        .replace(queryParameters: params.isNotEmpty ? params : null);
   }
 
   /// Builds a URL for raw (non-namespaced) endpoints like JWT routes.
@@ -63,8 +64,9 @@ class CoCartHttpClient {
     final base = _siteUrl.replaceAll(RegExp(r'/+$'), '');
     final prefix = _options.restPrefix;
     final path = '$base/$prefix/$endpoint';
-    return Uri.parse(path)
-        .replace(queryParameters: queryParams?.isNotEmpty == true ? queryParams : null);
+    return Uri.parse(path).replace(
+        queryParameters:
+            queryParams?.isNotEmpty == true ? queryParams : null);
   }
 
   Map<String, String> _buildHeaders({bool isJson = true}) {
@@ -80,6 +82,13 @@ class CoCartHttpClient {
     final authHeader = _auth.buildAuthHeader();
     if (authHeader != null) {
       headers[_options.authHeaderName] = authHeader;
+    }
+
+    // Cart key headers for guest sessions
+    final cartKey = _auth.cartKey;
+    if (cartKey != null) {
+      headers['Cart-Key'] = cartKey;
+      headers['CoCart-API-Cart-Key'] = cartKey; // Fallback for older plugin versions
     }
 
     return headers;
@@ -206,7 +215,8 @@ class CoCartHttpClient {
         // Capture cart key from response
         _auth.captureCartKey(data, response.headers);
 
-        final result = CoCartResponse(data, response.headers, response.statusCode);
+        final result = CoCartResponse(
+            data, response.headers, response.statusCode);
 
         // Apply response transformer if configured
         final transformed = _options.responseTransformer != null
@@ -230,12 +240,14 @@ class CoCartHttpClient {
       } catch (e) {
         if (attempt >= maxAttempts) {
           _emit('error', {'error': e.toString()});
-          throw NetworkException('Request failed after $maxAttempts attempts: $e');
+          throw NetworkException(
+              'Request failed after $maxAttempts attempts: $e');
         }
         // Retry
         if (_options.debug) {
           // ignore: avoid_print
-          print('[CoCart] Retry $attempt/$maxAttempts for $method ${url.toString()}');
+          print('[CoCart] Retry $attempt/$maxAttempts '
+              'for $method ${url.toString()}');
         }
       }
     }

@@ -10,7 +10,8 @@ class CoCartResponse {
 
   CoCartResponse(this._data, this._headers, this.statusCode);
 
-  /// Dot-notation access: `response.get('totals.total')`, `response.get('items.0.name')`.
+  /// Dot-notation access: `response.get('totals.total')`,
+  /// `response.get('items.0.name')`.
   dynamic get(String path) {
     final parts = path.split('.');
     dynamic current = _data;
@@ -40,7 +41,7 @@ class CoCartResponse {
   int getItemCount() => (_data['items_count'] as int?) ?? 0;
 
   String? getCartKey() =>
-      _headers['cart-key'] ?? _data['cart_key'] as String?;
+      _headers['cart-key'] ?? _headers['cocart-api-cart-key'] ?? _data['cart_key'] as String?;
 
   String? getCartHash() => _data['cart_hash'] as String?;
 

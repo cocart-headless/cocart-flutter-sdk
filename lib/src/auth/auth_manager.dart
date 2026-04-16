@@ -94,7 +94,7 @@ class AuthManager {
 
     final key = body['cart_key'] as String? ??
         headers['cart-key'] ??
-        headers['x-cocart-api'];
+        headers['cocart-api-cart-key']; // Fallback for older plugin versions
 
     if (key != null && key != _cartKey) {
       _cartKey = key;
