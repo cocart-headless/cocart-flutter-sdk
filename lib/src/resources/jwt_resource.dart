@@ -4,6 +4,7 @@ import '../auth/auth_manager.dart';
 import '../errors/auth_exception.dart';
 import '../http/http_client.dart';
 import '../http/response.dart';
+export '../errors/two_factor_auth_required_exception.dart';
 
 /// JWT resource — accessed via `client.jwt()`.
 ///
@@ -15,6 +16,10 @@ class JwtResource {
 
   JwtResource(this._http, this._auth);
 
+  /// Log in with username and password to acquire JWT tokens.
+  ///
+  /// If the user has 2FA enabled, throws [TwoFactorAuthRequiredException].
+  /// Catch that error, prompt for the code, then call [verifyTwoFactor].
   Future<CoCartResponse> login(String identifier, String password) async {
     final response = await _http.postRaw('cocart/jwt/token', body: {
       'username': identifier,
@@ -24,6 +29,33 @@ class JwtResource {
     final refresh = response.get('refresh_token') as String?;
     if (token == null) {
       throw const AuthException('JWT login failed — no token returned');
+    }
+    _auth.setJwtToken(token);
+    if (refresh != null) _auth.setRefreshToken(refresh);
+    return response;
+  }
+
+  /// Complete a Two Factor Authentication login challenge.
+  ///
+  /// Call this after catching [TwoFactorAuthRequiredException] from [login].
+  /// Submits the verification [code] and optional [provider] to acquire JWT tokens.
+  Future<CoCartResponse> verifyTwoFactor(
+    String identifier,
+    String password,
+    String code, {
+    String? provider,
+  }) async {
+    final body = <String, dynamic>{
+      'username': identifier,
+      'password': password,
+      '2fa_code': code,
+      if (provider != null) '2fa_provider': provider,
+    };
+    final response = await _http.postRaw('cocart/jwt/token', body: body);
+    final token = response.get('token') as String?;
+    final refresh = response.get('refresh_token') as String?;
+    if (token == null) {
+      throw const AuthException('JWT token not found in 2FA login response');
     }
     _auth.setJwtToken(token);
     if (refresh != null) _auth.setRefreshToken(refresh);

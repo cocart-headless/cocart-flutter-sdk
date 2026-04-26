@@ -32,6 +32,7 @@ export 'src/utilities/currency_formatter.dart';
 // Errors
 export 'src/errors/cocart_exception.dart';
 export 'src/errors/auth_exception.dart';
+export 'src/errors/two_factor_auth_required_exception.dart';
 export 'src/errors/validation_error.dart';
 export 'src/errors/version_error.dart';
 export 'src/errors/network_exception.dart';

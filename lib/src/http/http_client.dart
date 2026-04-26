@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 
 import '../auth/auth_manager.dart';
 import '../cocart_options.dart';
+import '../errors/auth_exception.dart';
 import '../errors/cocart_exception.dart';
 import '../errors/network_exception.dart';
 import '../errors/rate_limit_exception.dart';
+import '../errors/two_factor_auth_required_exception.dart';
 import 'response.dart';
 
 /// HTTP client wrapping the `http` package with retries, ETag, and events.
@@ -203,8 +205,30 @@ class CoCartHttpClient {
 
         // Handle error responses
         if (response.statusCode >= 400) {
-          final message =
-              data['message'] as String? ?? 'Request failed';
+          final message = data['message'] as String? ?? 'Request failed';
+          final code = data['code'] as String?;
+
+          if (response.statusCode == 401 && code == 'cocart_2fa_required') {
+            final inner = (data['data'] is Map<String, dynamic>
+                    ? data['data'] as Map<String, dynamic>
+                    : data);
+            final providers = (inner['available_providers'] as List?)
+                    ?.cast<String>() ??
+                [];
+            throw TwoFactorAuthRequiredException(
+              message,
+              statusCode: 401,
+              data: data,
+              availableProviders: providers,
+              defaultProvider: inner['default_provider'] as String?,
+              emailSent: inner['email_sent'] as bool? ?? false,
+            );
+          }
+
+          if (response.statusCode == 401 || response.statusCode == 403) {
+            throw AuthException(message, statusCode: response.statusCode, data: data);
+          }
+
           throw CoCartException(
             message,
             statusCode: response.statusCode,
