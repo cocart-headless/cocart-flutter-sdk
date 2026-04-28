@@ -12,10 +12,9 @@ Official Flutter SDK for the [CoCart](https://cocartapi.com) REST API. Build hea
 
 ## TODO to complete the SDK
 
-- Add SDK docs to documentation site
-- Add support for Cart API extras
-- Add Checkout API support
-- Add Customers Account API support
+* [ ] Add SDK docs to documentation site
+* [ ] Add support for Cart API extras
+* [ ] Add Checkout API support
 
 ## Requirements
 
