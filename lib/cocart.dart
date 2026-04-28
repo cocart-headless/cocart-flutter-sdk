@@ -13,6 +13,7 @@ export 'src/http/http_client.dart';
 export 'src/http/response.dart';
 
 // Resources
+export 'src/resources/account_resource.dart';
 export 'src/resources/cart_resource.dart';
 export 'src/resources/jwt_resource.dart';
 export 'src/resources/products_resource.dart';

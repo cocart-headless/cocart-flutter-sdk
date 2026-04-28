@@ -2,6 +2,7 @@ import 'auth/auth_manager.dart';
 import 'cocart_options.dart';
 import 'http/http_client.dart';
 import 'http/response.dart';
+import 'resources/account_resource.dart';
 import 'resources/cart_resource.dart';
 import 'resources/jwt_resource.dart';
 import 'resources/products_resource.dart';
@@ -25,6 +26,7 @@ class CoCart {
 
   // --- Resources (mirrors TS client.cart(), client.products() pattern) ---
 
+  AccountResource account() => AccountResource(_http);
   CartResource cart() => CartResource(_http, _options);
   ProductsResource products() => ProductsResource(_http, _options);
   SessionsResource sessions() => SessionsResource(_http);

@@ -114,6 +114,13 @@ class CoCartHttpClient {
     return _request('DELETE', url);
   }
 
+  /// GET from a raw (non-namespaced) endpoint (e.g. account routes).
+  Future<CoCartResponse> getRaw(String endpoint,
+      {Map<String, String>? queryParams}) async {
+    final url = _buildRawUrl(endpoint, queryParams: queryParams);
+    return _request('GET', url);
+  }
+
   /// POST to a raw (non-namespaced) endpoint (e.g. JWT routes).
   Future<CoCartResponse> postRaw(String endpoint,
       {Map<String, dynamic>? body}) async {
