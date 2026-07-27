@@ -136,7 +136,7 @@ const client = new CoCart('https://your-store.com', {
 ```typescript
 .all(filters?)
 .find(id)
-.findBySlug(slug)      // CoCart Basic only
+.findBySlug(slug)      // CoCart Starter only
 .variation(id, varId)
 .category(slug)
 .tag(slug)

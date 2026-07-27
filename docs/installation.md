@@ -112,7 +112,7 @@ final client = CoCart('https://your-store.com',
 
 ## Legacy Plugin Support
 
-If your store runs the older CoCart plugin (before CoCart Basic):
+If your store runs the older CoCart plugin (before CoCart Starter):
 
 ```dart
 final client = CoCart('https://your-store.com',
@@ -121,7 +121,7 @@ final client = CoCart('https://your-store.com',
 
 ### Behavior differences in legacy mode
 
-- Methods that require CoCart Basic (e.g. `products().findBySlug()`) throw a `VersionError`
+- Methods that require CoCart Starter (e.g. `products().findBySlug()`) throw a `VersionError`
 - Field filtering uses `fields` instead of `_fields`
 
 ```dart
@@ -129,7 +129,7 @@ final client = CoCart('https://your-store.com',
 try {
   await client.products().findBySlug('my-product');
 } on VersionError catch (e) {
-  print(e); // "findBySlug requires CoCart Basic — not available in legacy mode"
+  print(e); // "findBySlug requires CoCart Starter — not available in legacy mode"
 }
 ```
 

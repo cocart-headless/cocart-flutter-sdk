@@ -86,7 +86,7 @@ final product = await client.products().find(42);
 
 ### By Slug
 
-> CoCart Basic only — throws `VersionError` in legacy mode.
+> CoCart Starter only — throws `VersionError` in legacy mode.
 
 ```dart
 final product = await client.products().findBySlug('blue-t-shirt');

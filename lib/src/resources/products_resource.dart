@@ -5,7 +5,7 @@ import '../http/response.dart';
 
 /// Products resource — accessed via `client.products()`.
 ///
-/// Mirrors the TS SDK's products resource. Methods marked "CoCart Basic only"
+/// Mirrors the TS SDK's products resource. Methods marked "CoCart Starter only"
 /// throw [VersionError] when `mainPlugin` is `'legacy'`.
 class ProductsResource {
   final CoCartHttpClient _http;
@@ -16,7 +16,7 @@ class ProductsResource {
   void _requireBasic(String method) {
     if (_options.mainPlugin == 'legacy') {
       throw VersionError(
-          '$method requires CoCart Basic — not available in legacy mode');
+          '$method requires CoCart Starter — not available in legacy mode');
     }
   }
 
@@ -25,7 +25,7 @@ class ProductsResource {
 
   Future<CoCartResponse> find(int id) => _http.get('products/$id');
 
-  /// CoCart Basic only.
+  /// CoCart Starter only.
   Future<CoCartResponse> findBySlug(String slug) {
     _requireBasic('findBySlug');
     return _http.get('products', queryParams: {'slug': slug});

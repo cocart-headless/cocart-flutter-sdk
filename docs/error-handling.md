@@ -134,7 +134,7 @@ final cart = await client.jwt().withAutoRefresh(() async {
 
 ## Legacy Plugin Version Guard
 
-Methods that require CoCart Basic throw `VersionError` in legacy mode:
+Methods that require CoCart Starter throw `VersionError` in legacy mode:
 
 ```dart
 final client = CoCart('https://your-store.com',
@@ -143,7 +143,7 @@ final client = CoCart('https://your-store.com',
 try {
   await client.products().findBySlug('my-product');
 } on VersionError catch (e) {
-  print(e); // "VersionError: findBySlug requires CoCart Basic..."
+  print(e); // "VersionError: findBySlug requires CoCart Starter..."
 }
 ```
 
