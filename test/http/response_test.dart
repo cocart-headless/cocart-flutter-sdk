@@ -102,5 +102,49 @@ void main() {
       final decoded = jsonDecode(json) as Map<String, dynamic>;
       expect(decoded['items_count'], 2);
     });
+
+    test('getTaxes() returns array taxes as-is', () {
+      final withArrayTaxes = CoCartResponse(
+        {
+          'taxes': [
+            {'key': 'US-US-1', 'name': 'State Tax', 'price': '100'},
+          ],
+        },
+        {},
+        200,
+      );
+      final taxes = withArrayTaxes.getTaxes();
+      expect(taxes, hasLength(1));
+      expect(taxes[0]['key'], 'US-US-1');
+      expect(taxes[0]['name'], 'State Tax');
+      expect(taxes[0]['price'], '100');
+      expect(withArrayTaxes.hasTaxes(), isTrue);
+    });
+
+    test('getTaxes() normalizes legacy object-keyed taxes to a list', () {
+      final withLegacyTaxes = CoCartResponse(
+        {
+          'taxes': {
+            'US-US-1': {'name': 'State Tax', 'price': '100'},
+            'US-US-2': {'name': 'County Tax', 'price': '50'},
+          },
+        },
+        {},
+        200,
+      );
+      final taxes = withLegacyTaxes.getTaxes();
+      expect(taxes, hasLength(2));
+      expect(taxes[0]['key'], 'US-US-1');
+      expect(taxes[0]['name'], 'State Tax');
+      expect(taxes[0]['price'], '100');
+      expect(taxes[1]['key'], 'US-US-2');
+      expect(withLegacyTaxes.hasTaxes(), isTrue);
+    });
+
+    test('getTaxes()/hasTaxes() when no taxes present', () {
+      final withoutTaxes = CoCartResponse({}, {}, 200);
+      expect(withoutTaxes.getTaxes(), isEmpty);
+      expect(withoutTaxes.hasTaxes(), isFalse);
+    });
   });
 }

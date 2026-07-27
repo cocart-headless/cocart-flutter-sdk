@@ -15,7 +15,7 @@ void main() {
       final options = CoCartOptions(mainPlugin: 'legacy');
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
-        'https://example.com', options, auth, mockClient);
+          'https://example.com', options, auth, mockClient);
       final products = ProductsResource(httpClient, options);
 
       expect(
@@ -30,7 +30,7 @@ void main() {
       final options = CoCartOptions(mainPlugin: 'basic');
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
-        'https://example.com', options, auth, mockClient);
+          'https://example.com', options, auth, mockClient);
       final products = ProductsResource(httpClient, options);
 
       await products.findBySlug('test-product');
@@ -44,7 +44,7 @@ void main() {
       final options = CoCartOptions();
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
-        'https://example.com', options, auth, mockClient);
+          'https://example.com', options, auth, mockClient);
       final products = ProductsResource(httpClient, options);
 
       await products.all({'per_page': '12', 'page': '2'});
@@ -59,7 +59,7 @@ void main() {
       final options = CoCartOptions();
       final auth = AuthManager(options, MemoryStorage());
       final httpClient = CoCartHttpClient(
-        'https://example.com', options, auth, mockClient);
+          'https://example.com', options, auth, mockClient);
       final products = ProductsResource(httpClient, options);
 
       await products.category('clothing');

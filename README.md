@@ -95,6 +95,7 @@ void main() async {
 | [Authentication](docs/authentication.md) | Guest, Basic Auth, JWT, Consumer Keys, auth switching |
 | [Cart API](docs/cart.md) | Add/update/remove items, coupons, shipping, fees, cross-sells |
 | [Products API](docs/products.md) | Browse, filter, search products, categories, brands, reviews |
+| [Account API](docs/account.md) | Profile, orders, downloads, reviews (not yet released in the CoCart plugin) |
 | [Sessions API](docs/sessions.md) | Admin session management, storage adapters |
 | [Error Handling](docs/error-handling.md) | Error hierarchy, HTTP status mapping, validation errors |
 | [Utilities](docs/utilities.md) | Currency formatting, response transformer |

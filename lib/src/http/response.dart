@@ -50,6 +50,37 @@ class CoCartResponse {
   Map<String, dynamic>? getCurrency() =>
       _data['currency'] as Map<String, dynamic>?;
 
+  /// Get cart tax lines, normalized to a flat list — one entry per tax rate.
+  ///
+  /// CoCart Starter 5.0+ already returns `taxes` as an array. The community
+  /// CoCart plugin (and older Starter versions) instead return an object
+  /// keyed by the tax rate code, e.g. `{ "US-US-1": { name, price } }` —
+  /// that legacy shape is detected and converted here so callers never need
+  /// to branch on which plugin/version they're talking to.
+  List<Map<String, dynamic>> getTaxes() {
+    final raw = _data['taxes'];
+
+    if (raw is List) {
+      return raw.map((e) => e as Map<String, dynamic>).toList();
+    }
+
+    if (raw is Map) {
+      return raw.entries.map((entry) {
+        final tax = entry.value as Map<String, dynamic>;
+        return {
+          'key': entry.key,
+          'name': tax['name'],
+          'price': tax['price'],
+        };
+      }).toList();
+    }
+
+    return [];
+  }
+
+  /// Returns `true` if the cart has any tax lines.
+  bool hasTaxes() => getTaxes().isNotEmpty;
+
   String? getCacheStatus() => _headers['cocart-cache'];
 
   bool isNotModified() => statusCode == 304;

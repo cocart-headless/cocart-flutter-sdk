@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 /// A mock HTTP client for testing that returns preconfigured responses.
 class MockHttpClient extends http.BaseClient {
-  final List<MockResponse> _responses = [];
+  final List<Object> _responses = [];
   final List<http.BaseRequest> requests = [];
 
   void enqueue(MockResponse response) => _responses.add(response);
@@ -18,6 +18,10 @@ class MockHttpClient extends http.BaseClient {
     ));
   }
 
+  /// Queues an error to be thrown the next time a request is sent —
+  /// simulates a transient network failure for retry tests.
+  void enqueueException(Object error) => _responses.add(error);
+
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     requests.add(request);
@@ -27,6 +31,11 @@ class MockHttpClient extends http.BaseClient {
     }
 
     final mock = _responses.removeAt(0);
+
+    if (mock is! MockResponse) {
+      throw mock;
+    }
+
     return http.StreamedResponse(
       Stream.value(utf8.encode(mock.body)),
       mock.statusCode,

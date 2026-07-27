@@ -176,11 +176,10 @@ void main() {
       ));
 
       final resource = makeResource(mockClient);
-      expect(
-        () => resource.getProfile(),
+      await expectLater(
+        resource.getProfile(),
         throwsA(predicate<CoCartException>(
-            (e) => e.statusCode == 404 &&
-                (e.message.contains('plugin') || e.statusCode == 404))),
+            (e) => e.statusCode == 404 && e.message.contains('plugin'))),
       );
     });
   });

@@ -119,6 +119,16 @@ class CoCart {
 
   void clearETagCache() => _http.clearETagCache();
 
+  // --- Batch (requires CoCart Plus) ---
+
+  /// Dispatch multiple sub-requests in a single call via `{namespace}/batch`
+  /// (requires CoCart Plus). Each request is `{method, path, body?}`.
+  ///
+  /// See [CartResource.batchUpdateItems] / [CartResource.batchRemoveItems]
+  /// for typed convenience wrappers over this.
+  Future<CoCartResponse> batch(List<Map<String, dynamic>> requests) =>
+      _http.batch(requests);
+
   // --- Shorthand login/logout (mirrors TS) ---
 
   Future<CoCartResponse> login(String identifier, String password) =>

@@ -39,8 +39,10 @@ void main() {
     });
 
     test('rejects invalid emails', () {
-      expect(() => validateEmail('notanemail'), throwsA(isA<ValidationError>()));
-      expect(() => validateEmail('@no-user.com'), throwsA(isA<ValidationError>()));
+      expect(() => validateEmail('notanemail'),
+          throwsA(isA<ValidationError>()));
+      expect(() => validateEmail('@no-user.com'),
+          throwsA(isA<ValidationError>()));
       expect(() => validateEmail('no@'), throwsA(isA<ValidationError>()));
     });
   });

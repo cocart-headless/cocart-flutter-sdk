@@ -4,7 +4,8 @@ import 'cocart_exception.dart';
 class RateLimitException extends CoCartException {
   final Duration? retryAfter;
 
-  const RateLimitException(super.message, {this.retryAfter, super.statusCode, super.data});
+  const RateLimitException(super.message,
+      {this.retryAfter, super.statusCode, super.data});
 
   @override
   String toString() => 'RateLimitException: $message';
