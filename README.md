@@ -188,9 +188,6 @@ await client.jwt().withAutoRefresh(() async {
 
 CoCart is developed and maintained by [CoCart Headless, LLC](https://cocartapi.com).
 
-- [https://github.com/cocart-headless](https://github.com/cocart-headless)
-- [https://twitter.com/cocartheadless](https://twitter.com/cocartheadless)
-
 ## License
 
 Released under the [MIT License](LICENSE).
