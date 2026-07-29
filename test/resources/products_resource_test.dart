@@ -38,6 +38,20 @@ void main() {
       expect(url.queryParameters['slug'], 'test-product');
     });
 
+    test('find accepts a SKU', () async {
+      mockClient.enqueueJson({'sku': 'PCT-2024'});
+
+      final options = CoCartOptions();
+      final auth = AuthManager(options, MemoryStorage());
+      final httpClient = CoCartHttpClient(
+          'https://example.com', options, auth, mockClient);
+      final products = ProductsResource(httpClient, options);
+
+      await products.find('PCT-2024');
+      final url = mockClient.requests.first.url;
+      expect(url.path, contains('products/PCT-2024'));
+    });
+
     test('all passes filters as query params', () async {
       mockClient.enqueueJson({});
 

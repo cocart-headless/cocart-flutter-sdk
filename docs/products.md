@@ -78,10 +78,15 @@ final products = await client.products().all({
 
 ## Single Product
 
-### By ID
+### By ID or SKU
+
+`find()` accepts either the numeric product/variation ID or the product's SKU — either one works the same way.
 
 ```dart
 final product = await client.products().find(42);
+
+// Or by SKU
+final product = await client.products().find('PCT-2024');
 ```
 
 ### By Slug

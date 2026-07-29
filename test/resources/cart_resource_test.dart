@@ -62,6 +62,41 @@ void main() {
       expect(body['quantity'], '2');
     });
 
+    test('addItem accepts a SKU', () async {
+      mockClient.enqueueJson({'item_key': 'abc'});
+
+      final options = CoCartOptions();
+      final auth = AuthManager(options, MemoryStorage());
+      final httpClient = CoCartHttpClient(
+          'https://example.com', options, auth, mockClient);
+      final cart = CartResource(httpClient, options);
+
+      await cart.addItem('BLUE-SHIRT-L', 1);
+
+      final request = mockClient.requests.first;
+      final body = jsonDecode(
+          (request as http.Request).body) as Map<String, dynamic>;
+      expect(body['id'], 'BLUE-SHIRT-L');
+    });
+
+    test('addVariation accepts a SKU', () async {
+      mockClient.enqueueJson({'item_key': 'abc'});
+
+      final options = CoCartOptions();
+      final auth = AuthManager(options, MemoryStorage());
+      final httpClient = CoCartHttpClient(
+          'https://example.com', options, auth, mockClient);
+      final cart = CartResource(httpClient, options);
+
+      await cart.addVariation(
+          'VAR-SKU-1', 1, {'attribute_pa_color': 'blue'});
+
+      final request = mockClient.requests.first;
+      final body = jsonDecode(
+          (request as http.Request).body) as Map<String, dynamic>;
+      expect(body['id'], 'VAR-SKU-1');
+    });
+
     test('getFiltered uses _fields for basic mode', () async {
       mockClient.enqueueJson({'items': [], 'totals': {}});
 

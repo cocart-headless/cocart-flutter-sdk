@@ -70,6 +70,9 @@ final response = await client.cart().addItem(123, 2);
 
 // Shorthand alias
 final response = await client.cart().add(123, 2);
+
+// A SKU also works — the server resolves it to a product ID
+final response = await client.cart().addItem('BLUE-SHIRT-L', 1);
 ```
 
 ### Add with Options

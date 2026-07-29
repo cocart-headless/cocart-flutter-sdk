@@ -23,7 +23,12 @@ class CartResource {
     return _http.get('cart', queryParams: {param: fields.join(',')});
   }
 
-  Future<CoCartResponse> addItem(int productId, num quantity,
+  /// Add an item to the cart.
+  //
+  /// [productId] accepts a numeric product/variation ID or a SKU.
+  /// Both resolve a non-numeric id before falling back to a 404, so
+  /// [validateProductId] doesn't restrict the type here either.
+  Future<CoCartResponse> addItem(Object productId, num quantity,
       [Map<String, dynamic>? options]) {
     validateProductId(productId);
     validateQuantity(quantity);
@@ -35,12 +40,13 @@ class CartResource {
   }
 
   /// Alias for [addItem].
-  Future<CoCartResponse> add(int productId, num quantity,
+  Future<CoCartResponse> add(Object productId, num quantity,
       [Map<String, dynamic>? options]) =>
       addItem(productId, quantity, options);
 
+  /// [productId] accepts a numeric variation ID or a SKU — see [addItem].
   Future<CoCartResponse> addVariation(
-      int productId, num quantity, Map<String, String> attributes) {
+      Object productId, num quantity, Map<String, String> attributes) {
     validateProductId(productId);
     validateQuantity(quantity);
     return _http.post('cart/add-item', body: {
@@ -58,9 +64,13 @@ class CartResource {
   /// child product IDs to quantities. For adding unrelated products in one
   /// request, use [CoCartHttpClient.batch] instead.
   ///
+  /// [groupedProductId] accepts a numeric ID or a SKU — see [addItem]. The
+  /// child IDs inside [items] must still be numeric, they are not resolved
+  /// as SKUs server-side.
+  ///
   /// [items] may be a `Map<String, int>` of `childId => quantity` (shorthand)
   /// or a `List` of `{id, quantity}` entries.
-  Future<CoCartResponse> addItems(int groupedProductId, Object items) {
+  Future<CoCartResponse> addItems(Object groupedProductId, Object items) {
     validateProductId(groupedProductId);
 
     final quantity = <String, String>{};

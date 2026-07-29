@@ -23,7 +23,11 @@ class ProductsResource {
   Future<CoCartResponse> all([Map<String, String>? filters]) =>
       _http.get('products', queryParams: filters);
 
-  Future<CoCartResponse> find(int id) => _http.get('products/$id');
+  /// Get a single product by ID or SKU. `GET products/{id}` accepts either
+  /// the numeric product/variation ID or the product's SKU in the same path
+  /// segment (documented in both the CoCart Starter and CoCart Community v2
+  /// OpenAPI specs as "Unique identifier for the product (ID or SKU)").
+  Future<CoCartResponse> find(Object id) => _http.get('products/$id');
 
   /// CoCart Starter only.
   Future<CoCartResponse> findBySlug(String slug) {
